@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanceAI - Personal Finance Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>FinanceAI</h1>
+                <p>Your AI-Powered Financial Assistant</p>
+            </div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" class="form-control" value placeholder="john.doe@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-control" value="password">
+                </div>
+                <div class="biometric-options">
+                    <button class="btn btn--outline biometric-btn" id="biometricBtn">
+                        <span>🔒</span> Use Biometric Authentication
+                    </button>
+                </div>
+                <button class="btn btn--primary btn--full-width" id="loginBtn">Sign In</button>
+                <div class="two-factor">
+                    <p>Two-factor authentication will be required</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="main-app hidden">
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-brand">
+                <h2>FinanceAI</h2>
+            </div>
+            <div class="nav-links">
+                <button class="nav-link active" data-section="dashboard">Dashboard</button>
+                <button class="nav-link" data-section="expenses">Expenses</button>
+                <button class="nav-link" data-section="budget">Budget</button>
+                <button class="nav-link" data-section="investments">Investments</button>
+                <button class="nav-link" data-section="bills">Bills</button>
+                <button class="nav-link" data-section="reports">Reports</button>
+                <button class="nav-link" data-section="security">Security</button>
+            </div>
+            <div class="nav-user">
+                <button class="btn btn--outline btn--sm" id="logoutBtn">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h1>Welcome back, John!</h1>
+                    <p>Here's your financial overview for today</p>
+                </div>
+
+                <!-- Account Overview Cards -->
+                <div class="cards-grid">
+                    <div class="card balance-card">
+                        <div class="card__body">
+                            <h3>Total Balance</h3>
+                            <div class="balance-amount">$15,750.50</div>
+                            <div class="balance-change">+2.3% from last month</div>
+                        </div>
+                    </div>
+                    <div class="card income-card">
+                        <div class="card__body">
+                            <h3>Monthly Income</h3>
+                            <div class="balance-amount">$5,500.00</div>
+                            <div class="balance-change">Salary deposited</div>
+                        </div>
+                    </div>
+                    <div class="card expense-card">
+                        <div class="card__body">
+                            <h3>Monthly Expenses</h3>
+                            <div class="balance-amount">$3,200.00</div>
+                            <div class="balance-change">58% of income</div>
+                        </div>
+                    </div>
+                    <div class="card savings-card">
+                        <div class="card__body">
+                            <h3>Savings Goal</h3>
+                            <div class="balance-amount">$8,500 / $25,000</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 34%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and AI Insights -->
+                <div class="dashboard-content">
+                    <div class="chart-section">
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Spending Analytics</h3>
+                                <div class="chart-container" style="position: relative; height: 300px;">
+                                    <canvas id="spendingChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Account Balances</h3>
+                                <div class="account-list">
+                                    <div class="account-item">
+                                        <span>Main Checking ****1234</span>
+                                        <span class="account-balance">$3,250.75</span>
+                                    </div>
+                                    <div class="account-item">
+                                        <span>Emergency Fund ****5678</span>
+                                        <span class="account-balance">$8,500.00</span>
+                                    </div>
+                                    <div class="account-item">
+                                        <span>Investment Portfolio ****9012</span>
+                                        <span class="account-balance">$4,000.25</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Chatbot -->
+                    <div class="ai-chat-section">
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>AI Financial Assistant</h3>
+                                <div class="chat-container" id="chatContainer">
+                                    <div class="chat-message ai-message">
+                                        <div class="message-content">
+                                            Hello! I'm your AI financial assistant. I can help you with budgeting, spending analysis, investment advice, and more. What would you like to know?
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat-input-container">
+                                    <input type="text" class="form-control chat-input" id="chatInput" placeholder="Ask me about your finances...">
+                                    <button class="btn btn--primary" id="sendChatBtn">Send</button>
+                                </div>
+                                <div class="quick-questions">
+                                    <button class="btn btn--outline btn--sm quick-q" data-query="balance">Check Balance</button>
+                                    <button class="btn btn--outline btn--sm quick-q" data-query="spending">Spending Analysis</button>
+                                    <button class="btn btn--outline btn--sm quick-q" data-query="budget">Budget Status</button>
+                                    <button class="btn btn--outline btn--sm quick-q" data-query="savings">Savings Goal</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Expenses Section -->
+        <section id="expenses" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Expense Tracking</h1>
+                    <button class="btn btn--primary" id="addExpenseBtn">Add Expense</button>
+                </div>
+
+                <div class="expense-tools">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Receipt Scanner (OCR)</h3>
+                            <div class="receipt-scanner">
+                                <div class="scan-area">
+                                    <p>📷 Click to scan receipt or drag & drop image</p>
+                                    <button class="btn btn--outline" id="scanReceiptBtn">Scan Receipt</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="transactions-list">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Recent Transactions</h3>
+                            <div id="transactionsList">
+                                <!-- Transactions will be populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget Section -->
+        <section id="budget" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Budget Management</h1>
+                    <button class="btn btn--primary" id="setBudgetBtn">Set New Budget</button>
+                </div>
+
+                <div id="budgetOverview">
+                    <!-- Budget cards will be populated by JS -->
+                </div>
+
+                <div class="budget-chart-section">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Budget vs Actual Spending</h3>
+                            <div class="chart-container" style="position: relative; height: 400px;">
+                                <canvas id="budgetChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Investments Section -->
+        <section id="investments" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Investment Portfolio</h1>
+                    <div class="portfolio-value">
+                        <span class="portfolio-label">Total Portfolio Value:</span>
+                        <span class="portfolio-amount">$4,000.25</span>
+                    </div>
+                </div>
+
+                <div id="investmentsList">
+                    <!-- Investment cards will be populated by JS -->
+                </div>
+
+                <div class="investment-chart-section">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Portfolio Distribution</h3>
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="portfolioChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bills Section -->
+        <section id="bills" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Bill Management</h1>
+                    <button class="btn btn--primary" id="addBillBtn">Add Bill</button>
+                </div>
+
+                <div class="bills-overview">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Upcoming Bills</h3>
+                            <div class="total-bills">Total Due: $1,344.99</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="billsList">
+                    <!-- Bills will be populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Financial Reports</h1>
+                    <button class="btn btn--primary" id="downloadReportBtn">Download Report</button>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Monthly Summary</h3>
+                            <div class="report-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Income:</span>
+                                    <span class="stat-value">$5,500.00</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Expenses:</span>
+                                    <span class="stat-value">$3,200.00</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Net Savings:</span>
+                                    <span class="stat-value positive">$2,300.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Spending Trends</h3>
+                            <div class="chart-container" style="position: relative; height: 250px;">
+                                <canvas id="trendsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Section -->
+        <section id="security" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Security & Privacy</h1>
+                </div>
+
+                <div class="security-grid">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Authentication Settings</h3>
+                            <div class="security-option">
+                                <label class="security-label">
+                                    <input type="checkbox" checked> Two-Factor Authentication
+                                </label>
+                            </div>
+                            <div class="security-option">
+                                <label class="security-label">
+                                    <input type="checkbox" checked> Biometric Authentication
+                                </label>
+                            </div>
+                            <div class="security-option">
+                                <label class="security-label">
+                                    <input type="checkbox"> SMS Notifications
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Transaction Alerts</h3>
+                            <div class="alert-item">
+                                <div class="alert-icon">🔔</div>
+                                <div class="alert-content">
+                                    <div class="alert-title">Large Transaction Alert</div>
+                                    <div class="alert-desc">Notify for transactions over $500</div>
+                                </div>
+                                <div class="alert-toggle">
+                                    <input type="checkbox" checked>
+                                </div>
+                            </div>
+                            <div class="alert-item">
+                                <div class="alert-icon">⚠️</div>
+                                <div class="alert-content">
+                                    <div class="alert-title">Unusual Activity</div>
+                                    <div class="alert-desc">Alert for suspicious transactions</div>
+                                </div>
+                                <div class="alert-toggle">
+                                    <input type="checkbox" checked>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Privacy Controls</h3>
+                            <div class="privacy-option">
+                                <label class="security-label">
+                                    <input type="checkbox" checked> Data Encryption
+                                </label>
+                            </div>
+                            <div class="privacy-option">
+                                <label class="security-label">
+                                    <input type="checkbox"> Share Analytics
+                                </label>
+                            </div>
+                            <button class="btn btn--outline">Export My Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modals -->
+    <div id="addExpenseModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Expense</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-control" id="expenseDescription">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="expenseAmount" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-control" id="expenseCategory">
+                        <option>Food & Dining</option>
+                        <option>Transportation</option>
+                        <option>Shopping</option>
+                        <option>Utilities</option>
+                        <option>Healthcare</option>
+                        <option>Entertainment</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--outline" id="cancelExpenseBtn">Cancel</button>
+                <button class="btn btn--primary" id="saveExpenseBtn">Save Expense</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
